@@ -1,0 +1,12 @@
+dist:
+  name: cloudgraph-collector
+  description: OpenTelemetry infrastructure graph collector distribution
+  output_path: ./bin/cloudgraph-collector
+  otelcol_version: 0.139.0
+
+# Roadmap manifest. Custom components are not registered until they implement
+# the upstream Collector component interfaces and pass compatibility testing.
+receivers:
+  - gomod: go.opentelemetry.io/collector/receiver/otlpreceiver v0.139.0
+exporters:
+  - gomod: go.opentelemetry.io/collector/exporter/debugexporter v0.139.0

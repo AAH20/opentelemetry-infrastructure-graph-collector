@@ -1,0 +1,19 @@
+receivers:
+  azureasset:
+    subscriptions: [${env:AZURE_SUBSCRIPTION_ID}]
+  k8sgraph:
+    collection_interval: 60s
+  terraformplan:
+    path: /evidence/tfplan.json
+  opencost:
+    endpoint: http://opencost.opencost:9003
+connectors:
+  infrastructuregraph:
+    identity_policy: strict
+    inferred_edges: false
+exporters:
+  cloudgraph:
+    endpoint: http://cloudgraph:8080/v1/observations
+
+# This is a production design contract, not a runnable upstream Collector config
+# until the custom components are implemented and registered in the distribution.

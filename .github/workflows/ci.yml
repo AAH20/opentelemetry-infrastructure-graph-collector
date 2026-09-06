@@ -1,0 +1,18 @@
+name: CI
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-go@v6
+        with:
+          go-version: "1.24.x"
+      - run: go test ./...
+      - run: go run ./cmd/cloudgraph-collector --input examples/azure-aks-batch.json --output generated/graph-batch.json
+      - uses: actions/upload-artifact@v6
+        with:
+          name: graph-batch
+          path: generated/

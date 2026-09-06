@@ -1,0 +1,18 @@
+{
+  "batchId": "synthetic-azure-aks-001",
+  "observations": [
+    {"id":"business:checkout","kind":"business_service","name":"Checkout","source":"backstage","observedAt":"2026-09-06T08:00:00Z","attributes":{"owner":"commerce","monthly_revenue_usd":420000}},
+    {"id":"k8s:prod/checkout","kind":"kubernetes_workload","name":"checkout","source":"kubernetes","observedAt":"2026-09-06T08:00:00Z","attributes":{"owner":"commerce","namespace":"prod"}},
+    {"id":"azure:aks-prod","kind":"azure_resource","name":"aks-prod","source":"azure-resource-graph","observedAt":"2026-09-06T07:59:40Z","attributes":{"owner":"platform","monthly_cost_usd":8400}},
+    {"id":"azure:postgres-orders","kind":"database","name":"postgres-orders","source":"azure-resource-graph","observedAt":"2026-09-06T07:59:40Z","attributes":{"owner":"data","monthly_cost_usd":2650}},
+    {"id":"terraform:checkout","kind":"iac_module","name":"checkout-platform","source":"terraform-plan","observedAt":"2026-09-06T07:58:00Z","attributes":{"owner":"platform","change":"update"}},
+    {"id":"cost:checkout","kind":"cost_observation","name":"checkout-cost","source":"opencost","observedAt":"2026-09-06T07:59:00Z","attributes":{"owner":"commerce","monthly_cost_usd":3100}}
+  ],
+  "relationships": [
+    {"source":"business:checkout","target":"k8s:prod/checkout","relation":"depends_on","evidence":"backstage:checkout","evidenceType":"declared","observedAt":"2026-09-06T08:00:00Z"},
+    {"source":"k8s:prod/checkout","target":"azure:aks-prod","relation":"runs_on","evidence":"k8s:providerID","evidenceType":"observed","observedAt":"2026-09-06T08:00:00Z"},
+    {"source":"k8s:prod/checkout","target":"azure:postgres-orders","relation":"calls","evidence":"otel:servicegraph","evidenceType":"observed","observedAt":"2026-09-06T07:59:55Z"},
+    {"source":"terraform:checkout","target":"k8s:prod/checkout","relation":"declares","evidence":"tfplan:resource-change-3","evidenceType":"declared","observedAt":"2026-09-06T07:58:00Z"},
+    {"source":"cost:checkout","target":"k8s:prod/checkout","relation":"costs","evidence":"opencost:allocation","evidenceType":"calculated","observedAt":"2026-09-06T07:59:00Z"}
+  ]
+}
